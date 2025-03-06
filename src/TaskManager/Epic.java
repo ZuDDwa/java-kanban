@@ -6,13 +6,17 @@ import java.util.HashMap;
 
 public class Epic extends Task {
 
-    private HashMap<Integer, Subtask> subtasks;
+    private HashMap<Integer, Status> subtasksStatuses;
 
+    public Epic(String title, String description) {
+        super(title, description);
+        subtasksStatuses = new HashMap<>();
+    }
 
-    public Epic(String title, String description, int id) {
-        super(title, description, id);
-        subtasks = new HashMap<>();
-
+    /// Конструктор для обновления эпика
+    public Epic(Integer id, String title, String description) {
+        this(title, description);
+        this.id = id;
     }
 
     @Override
@@ -26,32 +30,28 @@ public class Epic extends Task {
     }
 
     public void addNewSubtask(Subtask newSubtask) {
-        subtasks.put(newSubtask.getId(), newSubtask);
-
+        subtasksStatuses.put(newSubtask.getId(), newSubtask.getStatus());
     }
 
-    public HashMap<Integer, Subtask> getSubtasksMap() {
-        return subtasks;
+    public HashMap<Integer, Status> getSubtasksStatuses() {
+        return subtasksStatuses;
     }
 
     public void clearSubtasks() {
-        subtasks.clear();
+        subtasksStatuses.clear();
     }
 
     public void removeSubtaskById(Integer subtaskId) {
-        subtasks.remove(subtaskId);
+        subtasksStatuses.remove(subtaskId);
     }
 
-    public void updateSubtaskById(Integer id, String title, String description) {
-        Subtask updatedSubtask = new Subtask(title, description, id, this.id);
-        subtasks.replace(id, subtasks.get(id), updatedSubtask);
+    public void updateSubtask(Subtask subtask) {
+        subtasksStatuses.replace(subtask.getId(), subtask.getStatus());
     }
 
-    public Collection<Status> getSubtasksStatuses() {
-        ArrayList<Status> subtaskStatuses = new ArrayList<>();
-        for (Subtask subtask : subtasks.values()) {
-            subtaskStatuses.add(subtask.getStatus());
-        }
-        return subtaskStatuses;
-    }
+
+
+
+
+
 }

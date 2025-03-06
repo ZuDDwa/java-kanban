@@ -5,30 +5,37 @@ import java.util.Objects;
 public class Task {
     protected String title;
     protected String description;
-    protected int id;
+    protected Integer id;
     protected Status status;
 
-    public Task(String title, String description, int id) {
+    public Task(String title, String description) {
         this.title = title;
         this.description = description;
         this.status = Status.NEW;
+    }
+
+    /// Конструктор для обновления задачи
+    public Task(Integer id, String title, String description, Status status) {
+        this(title, description);
         this.id = id;
+        this.status = status;
     }
 
     public String getTitle() {
         return title;
     }
 
-
-
     public String getDescription() {
         return description;
     }
 
 
-
     public int getId() {
         return id;
+    }
+
+    protected void setId(int id) {
+        this.id = id;
     }
 
     public Status getStatus() {
@@ -53,11 +60,11 @@ public class Task {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
-        return  Objects.equals(title, task.title) && Objects.equals(description, task.description) && status == task.status;
+        return id == task.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(title, description, status);
+        return Objects.hashCode(id);
     }
 }
