@@ -43,4 +43,6 @@ public interface TaskManager {
     void updateSubtask(Subtask updatedSubtask);
 
     int getIdCounter();
+
+    List<Task> getHistory();
 }

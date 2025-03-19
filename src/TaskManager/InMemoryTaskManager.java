@@ -1,14 +1,13 @@
 package TaskManager;
 
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
+import java.util.*;
 
 public class InMemoryTaskManager implements TaskManager {
-    private HashMap<Integer, Task> tasks;
-    private HashMap<Integer, Epic> epics;
-    private HashMap<Integer, Subtask> subtasks;
+    private Map<Integer, Task> tasks;
+    private Map<Integer, Epic> epics;
+    private Map<Integer, Subtask> subtasks;
+    private HistoryManager historyManager;
 
 
     private Integer idCounter;
@@ -17,6 +16,7 @@ public class InMemoryTaskManager implements TaskManager {
         tasks = new HashMap<>();
         epics = new HashMap<>();
         subtasks = new HashMap<>();
+        historyManager = new InMemoryHistoryManager();
         idCounter = 1;
     }
 
@@ -44,19 +44,19 @@ public class InMemoryTaskManager implements TaskManager {
     /// Получение по идентификатору (Задача/Эпик/Подзадача)
     @Override
     public Task getTaskById(Integer taskId) {
-        Managers.getDefaultHistory().add(tasks.get(taskId));
+        historyManager.add(tasks.get(taskId));
         return tasks.get(taskId);
     }
 
     @Override
     public Epic getEpicById(Integer epicId) {
-        Managers.getDefaultHistory().add(epics.get(epicId));
+        historyManager.add(epics.get(epicId));
         return epics.get(epicId);
     }
 
     @Override
     public Subtask getSubtaskById(Integer subtaskId) {
-        Managers.getDefaultHistory().add(subtasks.get(subtaskId));
+        historyManager.add(subtasks.get(subtaskId));
         return subtasks.get(subtaskId);
     }
 
@@ -146,6 +146,15 @@ public class InMemoryTaskManager implements TaskManager {
         updateEpicStatus(updatedSubtask.getEpicId());
     }
 
+    @Override
+    public int getIdCounter() {
+        return idCounter;
+    }
+
+    @Override
+    public List<Task> getHistory() {
+        return historyManager.getHistory();
+    }
 
     /// Обновление статуса эпика
     private void updateEpicStatus(Integer epicId) {
@@ -164,10 +173,5 @@ public class InMemoryTaskManager implements TaskManager {
     /// Присвоение id новому заданию
     private void setId(Task task) {
         task.setId(idCounter++);
-    }
-
-    @Override
-    public int getIdCounter() {
-        return idCounter;
     }
 }

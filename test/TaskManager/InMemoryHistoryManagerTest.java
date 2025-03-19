@@ -10,7 +10,7 @@ import java.util.ArrayList;
 class InMemoryHistoryManagerTest {
 
     static TaskManager taskManager = Managers.getDefault();
-    static HistoryManager historyManager = Managers.getDefaultHistory();
+
 
 
     static Task task1 = new Task( "Задача 1", "Описание задачи 1");
@@ -39,9 +39,9 @@ class InMemoryHistoryManagerTest {
         Task task = taskManager.getTaskById(1);
         Epic epic = taskManager.getEpicById(3);
         Subtask subtask = taskManager.getSubtaskById(4);
-        assertEquals(task, historyManager.getHistory().get(0));
-        assertEquals(epic, historyManager.getHistory().get(1));
-        assertEquals(subtask, historyManager.getHistory().get(2));
+        assertEquals(task, taskManager.getHistory().get(0));
+        assertEquals(epic, taskManager.getHistory().get(1));
+        assertEquals(subtask, taskManager.getHistory().get(2));
     }
 
     @Test
@@ -60,7 +60,7 @@ class InMemoryHistoryManagerTest {
         Epic epic5 = taskManager.getEpicById(3); // 12
         Epic epic6 = taskManager.getEpicById(3); // 13
 
-        assertEquals(10, historyManager.getHistory().size());
+        assertEquals(10, taskManager.getHistory().size());
     }
 
 
