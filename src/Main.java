@@ -4,8 +4,8 @@ import TaskManager.*;
 public class Main {
 
     public static void main(String[] args) {
-        TaskManager taskManager = Managers.getDfault();
-        HistoryManager historyManager = Managers.getDfaultHistory();
+        TaskManager taskManager = Managers.getDefault();
+        HistoryManager historyManager = Managers.getDefaultHistory();
 
         taskManager.addNewTask(new Task("Задача 1", "Описание задачи 1"));
         taskManager.addNewTask(new Task("Задача 2", "Описание задачи 2"));
@@ -74,8 +74,6 @@ public class Main {
 
         System.out.println(historyManager.getHistory());
         System.out.println(historyManager.getHistory().size());
-
-
 
 
     }

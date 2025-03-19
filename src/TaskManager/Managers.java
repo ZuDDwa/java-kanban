@@ -8,11 +8,11 @@ public class Managers {
     static TaskManager taskManager = new InMemoryTaskManager();
 
 
-    public static TaskManager getDfault() {
+    public static TaskManager getDefault() {
         return taskManager;
     }
 
-    public static HistoryManager getDfaultHistory() {
+    public static HistoryManager getDefaultHistory() {
         return historyManager;
     }
 }

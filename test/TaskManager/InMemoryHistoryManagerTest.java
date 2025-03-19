@@ -9,8 +9,8 @@ import java.util.ArrayList;
 
 class InMemoryHistoryManagerTest {
 
-    static TaskManager taskManager = Managers.getDfault();
-    static HistoryManager historyManager = Managers.getDfaultHistory();
+    static TaskManager taskManager = Managers.getDefault();
+    static HistoryManager historyManager = Managers.getDefaultHistory();
 
 
     static Task task1 = new Task( "Задача 1", "Описание задачи 1");
