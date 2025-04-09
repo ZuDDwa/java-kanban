@@ -1,6 +1,4 @@
-package TaskManager;
-
-import java.util.List;
+package taskmanager;
 
 public class Managers {
 
