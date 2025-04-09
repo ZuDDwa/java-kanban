@@ -1,4 +1,4 @@
-package TaskManager;
+package taskManager;
 
 import static org.junit.jupiter.api.Assertions.*;
 
