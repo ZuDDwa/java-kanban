@@ -4,8 +4,8 @@ package TaskManager;
 import java.util.*;
 
 public class InMemoryTaskManager implements TaskManager {
-    private Map<Integer, Task> tasks;
-    private Map<Integer, Epic> epics;
+    private final Map<Integer, Task> tasks;
+    private final Map<Integer, Epic> epics;
     private Map<Integer, Subtask> subtasks;
     private HistoryManager historyManager;
 
@@ -88,17 +88,29 @@ public class InMemoryTaskManager implements TaskManager {
     ///  Удаление всех задач (Задача/Эпик/Подзадача)
     @Override
     public void clearTasks() {
+        for (Integer id : tasks.keySet()) {
+            historyManager.remove(id);
+        }
         tasks.clear();
     }
 
     @Override
     public void clearEpics() {
+        for (Integer id : subtasks.keySet()) {
+            historyManager.remove(id);
+        }
+        for (Integer id : epics.keySet()) {
+            historyManager.remove(id);
+        }
         epics.clear();
         subtasks.clear();
     }
 
     @Override
     public void clearSubtasks() {
+        for (Integer id : subtasks.keySet()) {
+            historyManager.remove(id);
+        }
         subtasks.clear();
         for (Integer epicId : epics.keySet()) {
             epics.get(epicId).clearSubtasks();
@@ -110,14 +122,17 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void removeTaskById(Integer taskId) {
         tasks.remove(taskId);
+        historyManager.remove(taskId);
     }
 
     @Override
     public void removeEpicById(Integer epicId) {
         for (Integer subtaskId : epics.get(epicId).getSubtasksStatuses().keySet()) {
             subtasks.remove(subtaskId);
+            historyManager.remove(subtaskId);
         }
         epics.remove(epicId);
+        historyManager.remove(epicId);
     }
 
     @Override
@@ -126,6 +141,7 @@ public class InMemoryTaskManager implements TaskManager {
         epics.get(epicId).removeSubtaskById(subtaskId);
         subtasks.remove(subtaskId);
         updateEpicStatus(epicId);
+        historyManager.remove(subtaskId);
     }
 
     ///  Обновление (Задача/Эпик/Подзадача)
@@ -153,7 +169,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public List<Task> getHistory() {
-        return historyManager.getHistory();
+        return historyManager.getTasks();
     }
 
     /// Обновление статуса эпика
