@@ -1,5 +1,12 @@
-package taskmanager;
+package taskmanager.managers;
 
+
+import taskmanager.interfaces.HistoryManager;
+import taskmanager.Status;
+import taskmanager.tasks.Subtask;
+import taskmanager.interfaces.TaskManager;
+import taskmanager.tasks.Epic;
+import taskmanager.tasks.Task;
 
 import java.util.*;
 

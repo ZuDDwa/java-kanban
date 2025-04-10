@@ -1,4 +1,8 @@
-import taskmanager.*;
+import taskmanager.interfaces.TaskManager;
+import taskmanager.managers.Managers;
+import taskmanager.tasks.Epic;
+import taskmanager.tasks.Subtask;
+import taskmanager.tasks.Task;
 
 
 public class Main {

@@ -1,4 +1,7 @@
-package taskmanager;
+package taskmanager.managers;
+
+import taskmanager.interfaces.HistoryManager;
+import taskmanager.interfaces.TaskManager;
 
 public class Managers {
 

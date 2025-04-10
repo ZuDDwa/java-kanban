@@ -1,4 +1,8 @@
-package taskmanager;
+package taskmanager.interfaces;
+
+import taskmanager.tasks.Epic;
+import taskmanager.tasks.Subtask;
+import taskmanager.tasks.Task;
 
 import java.util.Collection;
 import java.util.List;

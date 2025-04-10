@@ -1,12 +1,15 @@
-package taskmanager;
+package taskmanager.managers;
+
+import taskmanager.interfaces.HistoryManager;
+import taskmanager.tasks.Task;
 
 import java.util.*;
 
 public class InMemoryHistoryManager implements HistoryManager {
 
-    transient int size = 0;
-    transient Node first;
-    transient Node last;
+
+    private Node first;
+    private Node last;
 
     private final Map<Integer, Node> taskHistory;
 
@@ -51,7 +54,7 @@ public class InMemoryHistoryManager implements HistoryManager {
         } else {
             l.next = newNode;
         }
-        size++;
+
     }
 
     private void removeNode(Node node) {
@@ -74,7 +77,7 @@ public class InMemoryHistoryManager implements HistoryManager {
         }
 
         node.item = null;
-        size--;
+
     }
 
     private static class Node {

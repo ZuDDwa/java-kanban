@@ -1,4 +1,6 @@
-package taskmanager;
+package taskmanager.tasks;
+
+import taskmanager.Status;
 
 import java.util.Objects;
 
@@ -34,7 +36,7 @@ public class Task {
         return id;
     }
 
-    protected void setId(int id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -42,7 +44,7 @@ public class Task {
         return status;
     }
 
-    protected void setStatus(Status status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
