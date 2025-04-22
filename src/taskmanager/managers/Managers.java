@@ -1,6 +1,7 @@
-package TaskManager;
+package taskmanager.managers;
 
-import java.util.List;
+import taskmanager.interfaces.HistoryManager;
+import taskmanager.interfaces.TaskManager;
 
 public class Managers {
 
