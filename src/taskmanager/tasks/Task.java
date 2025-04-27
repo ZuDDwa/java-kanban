@@ -1,7 +1,5 @@
 package taskmanager.tasks;
 
-import taskmanager.Status;
-
 import java.util.Objects;
 
 public class Task {
@@ -9,11 +7,13 @@ public class Task {
     protected String description;
     protected int id;
     protected Status status;
+    final Type type = Type.TASK;
 
     public Task(String title, String description) {
         this.title = title;
         this.description = description;
         this.status = Status.NEW;
+
     }
 
     /// Конструктор для обновления задачи
@@ -50,12 +50,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return "TaskManager.Task{" +
-                "title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", id=" + id +
-                ", status=" + status +
-                '}';
+        return  id + "," + type + "," + title + "," + status + "," + description;
     }
 
     @Override
@@ -68,5 +63,9 @@ public class Task {
     @Override
     public int hashCode() {
         return Objects.hashCode(id);
+    }
+
+    public Type getType() {
+        return type;
     }
 }

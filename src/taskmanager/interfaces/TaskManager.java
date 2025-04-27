@@ -20,13 +20,13 @@ public interface TaskManager {
 
     Subtask getSubtaskById(Integer subtaskId);
 
-    Collection<Task> getTasksList();
+    List<Task> getTasksList();
 
-    Collection<Epic> getEpicsList();
+    List<Epic> getEpicsList();
 
-    Collection<Subtask> getSubtasksList();
+    List<Subtask> getSubtasksList();
 
-    Collection<Subtask> getEpicSubtasksList(Integer epicId);
+    List<Subtask> getEpicSubtasksList(int epicId);
 
     void clearTasks();
 
