@@ -1,13 +1,11 @@
 package taskmanager.managers;
 
-
 import taskmanager.interfaces.HistoryManager;
 import taskmanager.tasks.Status;
 import taskmanager.tasks.Subtask;
 import taskmanager.interfaces.TaskManager;
 import taskmanager.tasks.Epic;
 import taskmanager.tasks.Task;
-
 import java.util.*;
 
 public class InMemoryTaskManager implements TaskManager {
@@ -15,8 +13,6 @@ public class InMemoryTaskManager implements TaskManager {
     protected Map<Integer, Epic> epics;
     protected Map<Integer, Subtask> subtasks;
     protected HistoryManager historyManager;
-
-
     private Integer idCounter;
 
     public InMemoryTaskManager() {

@@ -11,8 +11,10 @@ class ManagersTest {
 
     @Test
     void ManagersReturnsInitializedTaskManager() {
-        TaskManager taskManager = Managers.getDefault();
-        assertNotNull(taskManager);
+        TaskManager inMemoryTaskManager = Managers.getDefault();
+        TaskManager fileBackedTaskManager = Managers.getFileBackedTaskManager();
+        assertNotNull(inMemoryTaskManager);
+        assertNotNull(fileBackedTaskManager);
     }
 
     @Test
@@ -20,5 +22,6 @@ class ManagersTest {
         HistoryManager historyManager = Managers.getDefaultHistory();
         assertNotNull(historyManager);
     }
+
 
 }

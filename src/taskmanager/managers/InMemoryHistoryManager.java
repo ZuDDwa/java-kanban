@@ -2,11 +2,9 @@ package taskmanager.managers;
 
 import taskmanager.interfaces.HistoryManager;
 import taskmanager.tasks.Task;
-
 import java.util.*;
 
 public class InMemoryHistoryManager implements HistoryManager {
-
 
     private Node first;
     private Node last;
