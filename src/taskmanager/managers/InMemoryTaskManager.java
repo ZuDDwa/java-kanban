@@ -13,7 +13,7 @@ public class InMemoryTaskManager implements TaskManager {
     protected Map<Integer, Epic> epics;
     protected Map<Integer, Subtask> subtasks;
     protected HistoryManager historyManager;
-    private Integer idCounter;
+    protected Integer idCounter;
 
     public InMemoryTaskManager() {
         tasks = new HashMap<>();
@@ -119,6 +119,13 @@ public class InMemoryTaskManager implements TaskManager {
             updateEpicStatus(epicId);
         }
         subtasks.clear();
+    }
+
+    @Override
+    public void clearAll() {
+        clearTasks();
+        clearEpics();
+        idCounter = 1;
     }
 
     /// Удаление по идентификатору (Задача/Эпик/Подзадача)

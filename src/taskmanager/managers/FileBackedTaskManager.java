@@ -7,7 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
-    Path managerFilePath;
+    private final Path managerFilePath;
     private final String fileHeader = "id,type,name,status,description,epic";
 
 
@@ -30,6 +30,9 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 String line = fileReader.readLine();
                 if (!(line.isBlank() || line.equals(fileHeader))) {
                     Task task = getTaskFromString(line);
+                    if (idCounter < task.getId()) {
+                        idCounter = task.getId() + 1;
+                    }
 
                     switch (task.getType()) {
                         case TASK -> tasks.put(task.getId(), task);
@@ -40,7 +43,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                         case SUBTASK -> {
                             Subtask subtask = (Subtask) task;
                             subtasks.put(subtask.getId(), subtask);
-                            updateEpicStatus(subtask.getEpicId());
                         }
 
                         default -> throw new IllegalStateException("Unexpected value: " + task.getType());
@@ -49,6 +51,10 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+
+        for (Epic epic : epics.values()) {
+            updateEpicStatus(epic.getId());
         }
 
     }

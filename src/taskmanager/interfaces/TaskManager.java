@@ -32,6 +32,8 @@ public interface TaskManager {
 
     void clearSubtasks();
 
+    void clearAll();
+
     void removeTaskById(Integer taskId);
 
     void removeEpicById(Integer epicId);
