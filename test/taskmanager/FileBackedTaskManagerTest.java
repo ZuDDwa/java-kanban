@@ -1,20 +1,25 @@
 package taskmanager;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import taskmanager.interfaces.TaskManager;
-import taskmanager.managers.InMemoryTaskManager;
+import taskmanager.managers.FileBackedTaskManager;
 import taskmanager.tasks.Epic;
 import taskmanager.tasks.Status;
 import taskmanager.tasks.Subtask;
 import taskmanager.tasks.Task;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
-class InMemoryTaskManagerTest {
 
-    static TaskManager taskManager = new InMemoryTaskManager();
+import static org.junit.jupiter.api.Assertions.*;
 
+public class FileBackedTaskManagerTest {
+
+    static Path testFile = Paths.get("TasksListTest.csv");
+    static TaskManager taskManager = new FileBackedTaskManager(testFile);
 
     static Task task1 = new Task("Задача 1", "Описание задачи 1");
     static Task task2 = new Task("Задача 2", "Описание задачи 2");
@@ -27,6 +32,7 @@ class InMemoryTaskManagerTest {
 
     @BeforeAll
     static void fillTaskManager() {
+        taskManager.clearAll();
         taskManager.addNewTask(task1);
         taskManager.addNewTask(task2);
         taskManager.addNewEpic(epic1);
@@ -84,7 +90,9 @@ class InMemoryTaskManagerTest {
 
     @Test
     void taskManagerShouldIncreaseIdCounterByOne() {
-        TaskManager taskManager = new InMemoryTaskManager();
+        Path tempFile = Paths.get("tempFileForTest.csv");
+
+        TaskManager taskManager = new FileBackedTaskManager(tempFile);
         int expectedCounter = 1;
         assertEquals(expectedCounter, taskManager.getIdCounter());
         taskManager.addNewTask(task1);
@@ -93,11 +101,19 @@ class InMemoryTaskManagerTest {
         assertEquals(++expectedCounter, taskManager.getIdCounter());
         taskManager.addNewTask(subtask11);
         assertEquals(++expectedCounter, taskManager.getIdCounter());
+
+        try {
+            Files.delete(tempFile);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Test
     void taskManagerShouldAddTasksAndReturnThemById() {
-        TaskManager taskManager = new InMemoryTaskManager();
+        Path tempFile = Paths.get("tempFileForTest.csv");
+
+        TaskManager taskManager = new FileBackedTaskManager(tempFile);
         Task task = new Task("Задача", "Описание задачи");
         taskManager.addNewTask(task);
         Epic epic = new Epic("Эпик", "Описание эпика");
@@ -107,11 +123,19 @@ class InMemoryTaskManagerTest {
         assertEquals(task, taskManager.getTaskById(1));
         assertEquals(epic, taskManager.getEpicById(2));
         assertEquals(subtask, taskManager.getSubtaskById(3));
+
+        try {
+            Files.delete(tempFile);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Test
     void tasksWithTheSameIdShouldntConflict() {
-        TaskManager taskManager = new InMemoryTaskManager();
+        Path tempFile = Paths.get("tempFileForTest.csv");
+
+        TaskManager taskManager = new FileBackedTaskManager(tempFile);
         Task task = new Task("Задача", "Описание задачи");
         Task task2 = new Task(1, "Другая задача с тем же id", "Описание задачи", Status.IN_PROGRESS);
         taskManager.addNewTask(task);
@@ -121,11 +145,19 @@ class InMemoryTaskManagerTest {
         taskManager.updateTask(task2);
         Task task3 = new Task(1, "Другая задача с тем же id", "Описание задачи", Status.IN_PROGRESS);
         assertEquals(task3, taskManager.getTaskById(1));
+
+        try {
+            Files.delete(tempFile);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Test
     void epicsWithTheSameIdShouldntConflict() {
-        TaskManager taskManager = new InMemoryTaskManager();
+        Path tempFile = Paths.get("tempFileForTest.csv");
+
+        TaskManager taskManager = new FileBackedTaskManager(tempFile);
         Epic epic = new Epic("Эпик", "Описание эпика");
         Epic epic2 = new Epic(1, "Другой эпик с тем же id", "Описание эпика");
         taskManager.addNewEpic(epic);
@@ -135,11 +167,19 @@ class InMemoryTaskManagerTest {
         taskManager.updateEpic(epic2);
         Task epic3 = new Epic(1, "Другая задача с тем же id", "Описание задачи");
         assertEquals(epic3, taskManager.getEpicById(1));
+
+        try {
+            Files.delete(tempFile);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Test
     void subtasksWithTheSameIdShouldntConflict() {
-        TaskManager taskManager = new InMemoryTaskManager();
+        Path tempFile = Paths.get("tempFileForTest.csv");
+
+        TaskManager taskManager = new FileBackedTaskManager(tempFile);
         taskManager.addNewEpic(new Epic("Эпик", "Описание эпика"));
         Subtask subtask = new Subtask("Подзадача", "Описание подзадачи", 1);
         Subtask subtask2 = new Subtask(2, "Другая подзадача с тем же id", "Описание подзадачи", Status.IN_PROGRESS, 1);
@@ -150,11 +190,19 @@ class InMemoryTaskManagerTest {
         taskManager.updateSubtask(subtask2);
         Task subtask3 = new Subtask(2, "Другая подзадача с тем же id", "Описание подзадачи", Status.IN_PROGRESS, 1);
         assertEquals(subtask3, taskManager.getSubtaskById(2));
+
+        try {
+            Files.delete(tempFile);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Test
     void taskManagerShouldUpdateEpicsStatus() {
-        TaskManager taskManager = new InMemoryTaskManager();
+        Path tempFile = Paths.get("tempFileForTest.csv");
+
+        TaskManager taskManager = new FileBackedTaskManager(tempFile);
         Epic epic = new Epic("Тестовый эпик", "Описание эпика");
         taskManager.addNewEpic(epic);
         assertEquals(Status.NEW, epic.getStatus());
@@ -191,5 +239,61 @@ class InMemoryTaskManagerTest {
         taskManager.updateSubtask(subtask3Updated);
         assertEquals(Status.DONE, epic.getStatus());
 
+        try {
+            Files.delete(tempFile);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    void fileBackedTaskManagerShouldCreateFile() {
+        Path tempFile = Paths.get("tempFileForTest.csv");
+        TaskManager tskManager = new FileBackedTaskManager(tempFile);
+        assertTrue(Files.exists(tempFile));
+        try {
+            Files.delete(tempFile);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    void fileBackedTaskManagerShouldSaveToFileAndRead() throws IOException {
+
+        Path tempFile = Paths.get("tempFileForTest.csv");
+        try {
+            Files.createFile(tempFile);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        // Запись
+        TaskManager tskManager1 = new FileBackedTaskManager(tempFile);
+        Task task = new Task("Тестовая задача", "Описание");
+        Epic epic = new Epic("Тестовый эпик", "Описание");
+        Subtask subtask = new Subtask("Тестовая подзадача", "Описание", 2);
+        tskManager1.addNewTask(task);
+        tskManager1.addNewEpic(epic);
+        tskManager1.addNewEpicSubtask(subtask);
+
+        // Чтение
+        TaskManager tskManager2 = new FileBackedTaskManager(tempFile);
+        assertTrue(tskManager2.getTasksList().contains(task));
+        assertTrue(tskManager2.getEpicsList().contains(epic));
+        assertTrue(tskManager2.getSubtasksList().contains(subtask));
+
+        try {
+            Files.delete(tempFile);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    @Test
+    void fileBackedTaskManagerShouldSetIdCounter() {
+        TaskManager tskManager = new FileBackedTaskManager(testFile);
+        assertEquals(subtask22.getId() + 1, tskManager.getIdCounter());
     }
 }

@@ -2,11 +2,9 @@ package taskmanager.managers;
 
 import taskmanager.interfaces.HistoryManager;
 import taskmanager.tasks.Task;
-
 import java.util.*;
 
 public class InMemoryHistoryManager implements HistoryManager {
-
 
     private Node first;
     private Node last;
@@ -41,8 +39,10 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public void remove(int id) {
-        removeNode(taskHistory.get(id));
-        taskHistory.remove(id);
+        if (taskHistory.containsKey(id)) {
+            removeNode(taskHistory.get(id));
+            taskHistory.remove(id);
+        }
     }
 
     private void linkLast(Task task) {
